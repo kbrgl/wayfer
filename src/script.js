@@ -9,7 +9,7 @@ webFrame.setVisualZoomLevelLimits(1, 1);
 
 const holder = document.getElementById("drop-zone");
 
-holder.onclick = () => {
+holder.ondblclick = () => {
   dialog.showOpenDialog(
     remote.getCurrentWindow(),
     {
