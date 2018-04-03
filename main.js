@@ -18,7 +18,7 @@ function createWindow() {
     minWidth: size,
     titleBarStyle: "hiddenInset",
     fullscreenable: false,
-    backgroundColor: "#fceab3"
+    backgroundColor: "#f9e0aa"
   });
 
   // Load the index.html of the app.

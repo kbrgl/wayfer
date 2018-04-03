@@ -1,12 +1,29 @@
 const qr = require("qr-image");
 const tempWrite = require("temp-write");
-const { webFrame } = require("electron");
+const { webFrame, remote } = require("electron");
+const { dialog } = remote;
 const opn = require("opn");
 const createFileServer = require("../lib/createFileServer");
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 
 const holder = document.getElementById("drop-zone");
+
+holder.onclick = () => {
+  dialog.showOpenDialog(
+    remote.getCurrentWindow(),
+    {
+      properties: ["openFile", "openDirectory", "multiSelections"]
+    },
+    paths => {
+      handleFiles(
+        paths.map(path => ({
+          path
+        }))
+      );
+    }
+  );
+};
 
 holder.ondragenter = () => {
   holder.classList.add("active");
