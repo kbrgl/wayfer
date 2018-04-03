@@ -7,9 +7,9 @@ const createFileServer = require("../lib/createFileServer");
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 
-const holder = document.getElementById("drop-zone");
+const dropZone = document.getElementById("drop-zone");
 
-holder.ondblclick = () => {
+dropZone.ondblclick = () => {
   dialog.showOpenDialog(
     remote.getCurrentWindow(),
     {
@@ -25,28 +25,28 @@ holder.ondblclick = () => {
   );
 };
 
-holder.ondragenter = () => {
-  holder.classList.add("active");
+dropZone.ondragenter = () => {
+  dropZone.classList.add("active");
   return false;
 };
 
-holder.ondragleave = () => {
-  holder.classList.remove("active");
+dropZone.ondragleave = () => {
+  dropZone.classList.remove("active");
   return false;
 };
 
-holder.ondragover = () => {
+dropZone.ondragover = () => {
   return false;
 };
 
-holder.ondragend = () => {
+dropZone.ondragend = () => {
   return false;
 };
 
-holder.ondrop = e => {
+dropZone.ondrop = e => {
   e.preventDefault();
 
-  holder.classList.remove("active");
+  dropZone.classList.remove("active");
 
   handleFiles(e.dataTransfer.files);
 
