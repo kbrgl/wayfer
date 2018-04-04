@@ -9,13 +9,12 @@ let win;
 
 function createWindow() {
   // Create the browser window.
-  const size = 400;
+  const size = 300;
   win = new BrowserWindow({
     title: config.name,
     width: size,
     height: size,
-    minHeight: size,
-    minWidth: size,
+    resizable: false,
     titleBarStyle: "hiddenInset",
     fullscreenable: false,
     backgroundColor: "#f9e0aa",
