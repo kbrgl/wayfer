@@ -1,6 +1,6 @@
 # Conifer
 
-Conifer is a simple application for desktop-to-mobile file transfers.
+Conifer is a simple app for desktop-to-mobile file transfers.
 
 <center>
   <img src="resources/screenshot.png" height="500px">
