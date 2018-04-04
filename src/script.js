@@ -7,6 +7,28 @@ const createFileServer = require("../lib/createFileServer");
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 
+/**
+ * macOS title bar double click handler.
+ */
+const titleBar = document.getElementById("title-bar");
+
+titleBar.ondblclick = () => {
+  const setting = remote.systemPreferences
+    .getUserDefault("AppleActionOnDoubleClick", "string")
+    .toLowerCase();
+  switch (setting) {
+    case "minimize":
+      remote.getCurrentWindow().minimize();
+      break;
+    case "maximize":
+      remote.getCurrentWindow().maximize();
+      break;
+  }
+};
+
+/**
+ * Drop zone event handlers.
+ */
 const dropZone = document.getElementById("drop-zone");
 
 dropZone.ondblclick = () => {
