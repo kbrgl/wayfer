@@ -3,6 +3,7 @@ const tempWrite = require("temp-write");
 const { webFrame, remote } = require("electron");
 const { dialog } = remote;
 const opn = require("opn");
+const fs = require("fs");
 const createFileServer = require("../lib/createFileServer");
 
 webFrame.setVisualZoomLevelLimits(1, 1);
@@ -16,14 +17,7 @@ titleBar.ondblclick = () => {
   const setting = remote.systemPreferences
     .getUserDefault("AppleActionOnDoubleClick", "string")
     .toLowerCase();
-  switch (setting) {
-    case "minimize":
-      remote.getCurrentWindow().minimize();
-      break;
-    case "maximize":
-      remote.getCurrentWindow().maximize();
-      break;
-  }
+  if (setting === "minimize") remote.getCurrentWindow().minimize();
 };
 
 /**
@@ -35,7 +29,7 @@ dropZone.ondblclick = () => {
   dialog.showOpenDialog(
     remote.getCurrentWindow(),
     {
-      properties: ["openFile", "openDirectory", "multiSelections"]
+      properties: ["openFile", "multiSelections"]
     },
     paths => {
       handleFiles(
@@ -77,16 +71,23 @@ dropZone.ondrop = e => {
 
 function handleFiles(files) {
   for (let f of files) {
-    createFileServer(f.path, (address, server) => {
-      console.log(`Opened file ${f.path} at ${address}`);
+    ensureFile(f.path, () => {
+      createFileServer(f.path, (address, server) => {
+        console.log(`Opened file ${f.path} at ${address}`);
 
-      const qrImage = qr.image(address, {
-        parse_url: true,
-        size: 20
-      });
-      tempWrite(qrImage).then(res => {
-        opn(res);
+        const qrImage = qr.image(address, { parse_url: true, size: 20 });
+        tempWrite(qrImage).then(res => {
+          opn(res);
+        });
       });
     });
   }
+}
+
+function ensureFile(path, onSure) {
+  fs.lstat(path, (err, stats) => {
+    if (err) alert("An unexpected error occurred");
+    else if (stats.isFile()) onSure();
+    else alert("Folders are currently unsupported.");
+  });
 }

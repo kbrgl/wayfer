@@ -17,7 +17,7 @@ function createWindow() {
     resizable: false,
     titleBarStyle: "hiddenInset",
     fullscreenable: false,
-    backgroundColor: "#f9e0aa",
+    backgroundColor: "#effffa",
     show: false
   });
 
