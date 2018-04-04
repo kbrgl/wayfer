@@ -18,7 +18,8 @@ function createWindow() {
     minWidth: size,
     titleBarStyle: "hiddenInset",
     fullscreenable: false,
-    backgroundColor: "#f9e0aa"
+    backgroundColor: "#f9e0aa",
+    show: false
   });
 
   // Load the index.html of the app.
@@ -39,6 +40,15 @@ function createWindow() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+  });
+
+  // This method will be called when the page has been
+  // loaded. I've used it to show the window only when
+  // the application has finished loading, so users
+  // don't see the square of solid color.
+  win.on("ready-to-show", () => {
+    win.show();
+    win.focus();
   });
 }
 
