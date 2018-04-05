@@ -1,6 +1,6 @@
 {
-  "name": "conifer",
-  "productName": "Conifer",
+  "name": "wayfer",
+  "productName": "Wayfer",
   "version": "0.1.0",
   "description": "QR Transfer app for desktop",
   "main": "main.js",

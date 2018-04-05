@@ -1,7 +1,6 @@
 const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 const url = require("url");
-const config = require("./config");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -11,7 +10,7 @@ function createWindow() {
   // Create the browser window.
   const size = 300;
   win = new BrowserWindow({
-    title: config.name,
+    title: "Wayfer",
     width: size,
     height: size,
     resizable: false,
