@@ -1,10 +1,8 @@
 # Wayfer
 
-Wayfer is a simple app for desktop-to-mobile file transfers.
+<img src="resources/screenshot.png" height="300px">
 
-<center>
-  <img src="resources/screenshot.png" height="500px">
-</center>
+Wayfer is a simple app for desktop-to-mobile file transfers.
 
 # Installation
 
