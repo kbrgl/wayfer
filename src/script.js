@@ -48,19 +48,17 @@ function handleFiles(files) {
   }
 }
 
+function handlePaths(paths) {
+  return handleFiles(paths.map(path => ({ path })))
+}
+
 function showOpenDialog() {
   dialog.showOpenDialog(
     remote.getCurrentWindow(),
     {
       properties: ["openFile", "multiSelections"],
     },
-    paths => {
-      handleFiles(
-        paths.map(path => ({
-          path,
-        })),
-      )
-    },
+    handlePaths,
   )
 }
 
@@ -107,6 +105,9 @@ dropZone.ondrop = e => {
   return false
 }
 
+/**
+ * Open file event originating from main process (ex. touch bar)
+ */
 ipcRenderer.on("open-file", () => {
   showOpenDialog()
 })
