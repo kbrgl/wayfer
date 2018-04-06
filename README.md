@@ -1,4 +1,5 @@
 <h1 align="center">
+  <img src="build/icon.png" alt="Wayfer" height="128" width="128">
   <p>Wayfer</p>
 </h1>
 
