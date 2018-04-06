@@ -1,6 +1,6 @@
 const qr = require("qr-image");
 const tempWrite = require("temp-write");
-const { webFrame, remote } = require("electron");
+const { webFrame, remote, ipcRenderer } = require("electron");
 const { dialog } = remote;
 const opn = require("opn");
 const fs = require("fs");
@@ -25,21 +25,7 @@ titleBar.ondblclick = () => {
  */
 const dropZone = document.getElementById("drop-zone");
 
-dropZone.ondblclick = () => {
-  dialog.showOpenDialog(
-    remote.getCurrentWindow(),
-    {
-      properties: ["openFile", "multiSelections"]
-    },
-    paths => {
-      handleFiles(
-        paths.map(path => ({
-          path
-        }))
-      );
-    }
-  );
-};
+dropZone.ondblclick = showOpenDialog;
 
 dropZone.ondragenter = () => {
   dropZone.classList.add("active");
@@ -69,6 +55,10 @@ dropZone.ondrop = e => {
   return false;
 };
 
+ipcRenderer.on("open-file", () => {
+  showOpenDialog();
+});
+
 function handleFiles(files) {
   for (let f of files) {
     ensureFile(f.path, () => {
@@ -90,4 +80,20 @@ function ensureFile(path, onSure) {
     else if (stats.isFile()) onSure();
     else alert("Folders are currently unsupported.");
   });
+}
+
+function showOpenDialog() {
+  dialog.showOpenDialog(
+    remote.getCurrentWindow(),
+    {
+      properties: ["openFile", "multiSelections"]
+    },
+    paths => {
+      handleFiles(
+        paths.map(path => ({
+          path
+        }))
+      );
+    }
+  );
 }

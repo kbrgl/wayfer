@@ -1,4 +1,11 @@
-const { app, BrowserWindow, Menu } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  remote,
+  ipcMain,
+  TouchBar
+} = require("electron");
 const path = require("path");
 const url = require("url");
 
@@ -6,14 +13,31 @@ const url = require("url");
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
+function createTouchBar() {
+  let touchBar;
+  const { TouchBarButton } = TouchBar;
+  const open = new TouchBarButton({
+    label: "Open",
+    backgroundColor: "#effffa",
+    click: () => {
+      win.webContents.send("open-file", null);
+    }
+  });
+  return new TouchBar({ items: [open] });
+}
+
 function createWindow() {
   // Create the browser window.
-  const size = 300;
+  const size = 250;
   win = new BrowserWindow({
     title: "Wayfer",
     width: size,
+    minWidth: size,
+    maxWidth: 500,
     height: size,
-    resizable: false,
+    minHeight: size,
+    maxHeight: 400,
+    maximizable: false,
     titleBarStyle: "hiddenInset",
     fullscreenable: false,
     backgroundColor: "#effffa",
@@ -28,6 +52,10 @@ function createWindow() {
       slashes: true
     })
   );
+
+  if (process.platform === "darwin") {
+    win.setTouchBar(createTouchBar());
+  }
 
   /* Uncomment to open dev-tools */
   // win.webContents.openDevTools();
