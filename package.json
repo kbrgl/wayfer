@@ -4,22 +4,23 @@
   "version": "0.1.0",
   "description": "QR Transfer app for desktop",
   "main": "main.js",
-  "repository": "https://github.com/kbrgl/qx.git",
+  "repository": "https://github.com/kbrgl/wayfer.git",
   "author": "Kabir Goel",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager ."
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "devDependencies": {
-    "electron-packager": "^11.2.0",
+    "electron-builder": "^20.8.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.10.0"
+    "eslint-plugin-import": "^2.10.0",
+    "electron": "^2.0.0-beta.6"
   },
   "dependencies": {
-    "electron": "^2.0.0-beta.6",
     "compression": "^1.7.2",
     "express": "^4.16.3",
     "ip": "^1.1.5",

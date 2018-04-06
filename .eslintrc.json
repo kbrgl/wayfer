@@ -3,7 +3,8 @@
   "rules": {
     "semi": ["warn", "never"],
     "no-shadow": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "import/no-extraneous-dependencies": "off"
   },
   "env": {
     "node": true,
