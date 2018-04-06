@@ -30,11 +30,19 @@ function ensureFile(path, onSure) {
 function handleFiles(files) {
   for (let i = 0; i < files.length; i += 1) {
     ensureFile(files[i].path, () => {
-      createFileServer(files[i].path, address => {
-        const qrImage = qr.image(address, { parse_url: true, size: 20 })
-        tempWrite(qrImage).then(res => {
-          opn(res)
-        })
+      createFileServer(files[i].path, {
+        onCreate: address => {
+          const qrImage = qr.image(address, { parse_url: true, size: 20 })
+          tempWrite(qrImage).then(res => {
+            opn(res)
+          })
+        },
+        onSend: () => {
+          const notification = new Notification("Sent", {
+            body: "File sent to device.",
+          })
+          notification.onclick = () => {}
+        },
       })
     })
   }
