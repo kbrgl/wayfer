@@ -1,34 +1,26 @@
-const {
-  app,
-  BrowserWindow,
-  Menu,
-  remote,
-  ipcMain,
-  TouchBar
-} = require("electron");
-const path = require("path");
-const url = require("url");
+const { app, BrowserWindow, TouchBar } = require("electron")
+const path = require("path")
+const url = require("url")
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win;
+let win
 
 function createTouchBar() {
-  let touchBar;
-  const { TouchBarButton } = TouchBar;
+  const { TouchBarButton } = TouchBar
   const open = new TouchBarButton({
     label: "Open",
     backgroundColor: "#effffa",
     click: () => {
-      win.webContents.send("open-file", null);
-    }
-  });
-  return new TouchBar({ items: [open] });
+      win.webContents.send("open-file", null)
+    },
+  })
+  return new TouchBar({ items: [open] })
 }
 
 function createWindow() {
   // Create the browser window.
-  const size = 250;
+  const size = 250
   win = new BrowserWindow({
     title: "Wayfer",
     width: size,
@@ -41,23 +33,23 @@ function createWindow() {
     titleBarStyle: "hiddenInset",
     fullscreenable: false,
     backgroundColor: "#effffa",
-    show: false
-  });
+    show: false,
+  })
 
   // Load the index.html of the app.
   win.loadURL(
     url.format({
       pathname: path.join(__dirname, "src", "index.html"),
       protocol: "file:",
-      slashes: true
-    })
-  );
+      slashes: true,
+    }),
+  )
 
   if (process.platform === "darwin") {
-    win.setTouchBar(createTouchBar());
+    win.setTouchBar(createTouchBar())
   }
 
-  /* Uncomment to open dev-tools */
+  // Uncomment to open dev-tools
   // win.webContents.openDevTools();
 
   // Emitted when the window is closed.
@@ -65,37 +57,37 @@ function createWindow() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    win = null;
-  });
+    win = null
+  })
 
   // This method will be called when the page has been
   // loaded. I've used it to show the window only when
   // the application has finished loading, so users
   // don't see the square of solid color.
   win.on("ready-to-show", () => {
-    win.show();
-    win.focus();
-  });
+    win.show()
+    win.focus()
+  })
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", createWindow)
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== "darwin") {
-    app.quit();
+    app.quit()
   }
-});
+})
 
 app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
-    createWindow();
+    createWindow()
   }
-});
+})
