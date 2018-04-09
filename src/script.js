@@ -12,6 +12,18 @@ webFrame.setVisualZoomLevelLimits(1, 1)
 /**
  * Helper functions.
  */
+function notify(title, body) {
+  const notification = new Notification(title, { body })
+  return notification
+}
+
+function showQR(address) {
+  const qrImage = qr.image(address, { parse_url: true, size: 20 })
+  tempWrite(qrImage).then(res => {
+    opn(res)
+  })
+}
+
 function showError(message) {
   dialog.showMessageBox(remote.getCurrentWindow(), {
     type: "error",
@@ -31,17 +43,9 @@ function handleFiles(files) {
   for (let i = 0; i < files.length; i += 1) {
     ensureFile(files[i].path, () => {
       createFileServer(files[i].path, {
-        onCreate: address => {
-          const qrImage = qr.image(address, { parse_url: true, size: 20 })
-          tempWrite(qrImage).then(res => {
-            opn(res)
-          })
-        },
+        onCreate: showQR,
         onSend: () => {
-          const notification = new Notification("Sent", {
-            body: "File sent to device.",
-          })
-          notification.onclick = () => {}
+          notify("Sent.", "File sent to device.")
         },
       })
     })
