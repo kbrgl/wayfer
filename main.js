@@ -1,10 +1,19 @@
-const { app, BrowserWindow, TouchBar } = require("electron")
+const { TouchBar, Menu } = require("electron")
+const menubar = require("menubar")
 const path = require("path")
 const url = require("url")
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let win
+const mb = menubar({
+  title: "Wayfer",
+  width: 250,
+  minWidth: 250,
+  height: 220,
+  minHeight: 220,
+  preloadWindow: true,
+  icon: null,
+  showDockIcon: true,
+  backgroundColor: "#e4fefd",
+})
 
 function createTouchBar() {
   const { TouchBarButton } = TouchBar
@@ -12,32 +21,47 @@ function createTouchBar() {
     label: "Open",
     backgroundColor: "#effffa",
     click: () => {
-      win.webContents.send("open-file", null)
+      mb.window.webContents.send("open-files", null)
     },
   })
   return new TouchBar({ items: [open] })
 }
 
-function createWindow() {
-  // Create the browser window.
-  const size = 250
-  win = new BrowserWindow({
-    title: "Wayfer",
-    width: size,
-    minWidth: size,
-    maxWidth: 500,
-    height: size,
-    minHeight: size,
-    maxHeight: 400,
-    maximizable: false,
-    titleBarStyle: "hiddenInset",
-    fullscreenable: false,
-    backgroundColor: "#effffa",
-    show: false,
+mb.on("ready", () => {
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Quit",
+      click: () => {
+        mb.app.quit()
+      },
+    },
+  ])
+
+  let iconFile = null
+  switch (process.platform) {
+    case "darwin":
+      iconFile = "trayTemplate.png"
+      break
+    case "win32":
+      iconFile = "tray.ico"
+      break
+    default:
+      iconFile = "tray.png"
+  }
+  mb.tray.setImage(path.join(__dirname, "assets", iconFile))
+
+  mb.tray.on("right-click", () => {
+    mb.tray.popUpContextMenu(contextMenu)
   })
 
-  // Load the index.html of the app.
-  win.loadURL(
+  mb.tray.on("drop-files", (e, filepaths) => {
+    e.preventDefault()
+    mb.window.webContents.send("open-files", filepaths)
+  })
+})
+
+mb.on("after-create-window", () => {
+  mb.window.loadURL(
     url.format({
       pathname: path.join(__dirname, "src", "index.html"),
       protocol: "file:",
@@ -46,48 +70,6 @@ function createWindow() {
   )
 
   if (process.platform === "darwin") {
-    win.setTouchBar(createTouchBar())
-  }
-
-  // Uncomment to open dev-tools
-  // win.webContents.openDevTools();
-
-  // Emitted when the window is closed.
-  win.on("closed", () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null
-  })
-
-  // This method will be called when the page has been
-  // loaded. I've used it to show the window only when
-  // the application has finished loading, so users
-  // don't see the square of solid color.
-  win.on("ready-to-show", () => {
-    win.show()
-    win.focus()
-  })
-}
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on("ready", createWindow)
-
-// Quit when all windows are closed.
-app.on("window-all-closed", () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== "darwin") {
-    app.quit()
-  }
-})
-
-app.on("activate", () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
+    mb.window.setTouchBar(createTouchBar())
   }
 })
