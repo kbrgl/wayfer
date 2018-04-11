@@ -45,23 +45,23 @@ body {
 #drop-zone #signifier {
   /* If z-index is 0, the drop won't work on the signifier itself */
   z-index: -1;
-  padding: 10px 20px;
-  border-radius: 40px;
   transition: background 0.2s;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  filter: blur(0);
+  transition: filter 100ms linear;
 }
 
-#drop-zone #signifier h1 {
+#drop-zone.active #signifier {
+  filter: blur(5px)
+}
+
+#signifier h1 {
   font-size: 1.3rem;
   line-height: 1.3rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
-}
-
-#drop-zone.active #signifier {
-  background: #fff;
 }
