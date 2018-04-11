@@ -43,13 +43,17 @@ function ensureFile(filepath, onSure) {
 
 function handleFile(filepath) {
   ensureFile(filepath, () => {
-    // epoch is used to calculate time since last request.
-    let epoch = Date.now()
+    const minute = 60 * 1000
+    let timeout = null
     const server = createFileServer(
       filepath,
       () => {
-        // Set epoch to request time.
-        epoch = Date.now()
+        // Server close logic.
+        // Closes server 10 minutes after last request.
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          server.close()
+        }, 10 * minute)
       },
       () => {
         // Send notification.
@@ -57,16 +61,6 @@ function handleFile(filepath) {
       },
     )
     server.listen(0)
-
-    // Set up server close logic.
-    const minute = 60 * 1000
-    const interval = setInterval(() => {
-      // Check whether 10 minutes passed since last request.
-      if (new Date() - epoch > 10 * minute) {
-        server.close()
-        clearInterval(interval)
-      }
-    }, 5 * minute)
 
     // Start server and show QR code.
     // Using url.resolve() and path.basename() to append the filename to the URL,
