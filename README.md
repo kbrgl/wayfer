@@ -18,4 +18,7 @@ For now, you'll have to build the package yourself.
 1.  Drag a file to the Wayfer window (or double click the window)
 2.  Scan the QR code
 
-QRs can be scanned using the built-in camera app (iOS) or using a QR scanner app (Android)
+QRs can be scanned using the built-in camera app (iOS) or using a QR scanner app (Android).
+
+Files remain available until 10 minutes after the last request to the server,
+or 10 minutes after the server is started if no request is made.
