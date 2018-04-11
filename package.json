@@ -1,7 +1,7 @@
 {
   "name": "wayfer",
   "productName": "Wayfer",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "QR Transfer app for desktop",
   "main": "main.js",
   "repository": "https://github.com/kbrgl/wayfer.git",
