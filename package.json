@@ -18,7 +18,9 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.10.0"
+    "eslint-plugin-import": "^2.10.0",
+    "stylelint": "^9.2.0",
+    "stylelint-config-standard": "^18.2.0"
   },
   "dependencies": {
     "ip": "^1.1.5",
