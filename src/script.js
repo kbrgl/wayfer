@@ -20,7 +20,6 @@ function notify(title, body) {
 }
 
 function showCode(address) {
-  console.log(address)
   const qrImage = qr.image(address, { parse_url: true, size: 20 })
   tempWrite(qrImage).then(res => {
     opn(res)
@@ -81,8 +80,6 @@ function handleFile(filepath) {
 }
 
 function handleFiles(filepaths) {
-  console.log(filepaths)
-
   Array.from(filepaths).forEach(handleFile)
 }
 
