@@ -20,5 +20,5 @@ For now, you'll have to build the package yourself.
 
 QRs can be scanned using the built-in camera app (iOS) or using a QR scanner app (Android).
 
-Files remain available until 10 minutes after the last request to the server,
-or 10 minutes after the server is started if no request is made.
+Files remain available until 30 minutes after the last request to the server,
+or 2 hours after the server is started if no request is made.
