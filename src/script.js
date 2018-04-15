@@ -44,6 +44,7 @@ function ensureFile(filepath, onSure) {
 function handleFile(filepath) {
   ensureFile(filepath, () => {
     const minute = 60 * 1000
+    const hour = 60 * minute
     let timeout = null
     const server = createFileServer(
       filepath,
@@ -53,7 +54,7 @@ function handleFile(filepath) {
         clearTimeout(timeout)
         timeout = setTimeout(() => {
           server.close()
-        }, 10 * minute)
+        }, 30 * minute)
       },
       () => {
         // Send notification.
@@ -61,6 +62,11 @@ function handleFile(filepath) {
       },
     )
     server.listen(0)
+
+    // Set timeout in case QR is not scanned.
+    timeout = setTimeout(() => {
+      server.close()
+    }, 2 * hour)
 
     // Start server and show QR code.
     // Using url.resolve() and path.basename() to append the filename to the URL,
