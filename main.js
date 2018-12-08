@@ -3,7 +3,7 @@ const menubar = require("menubar")
 const path = require("path")
 const url = require("url")
 
-const iconPath = filename => path.join(__dirname, "assets", filename)
+const asset = filename => path.join(__dirname, "assets", filename)
 
 const mb = menubar({
   title: "Wayfer",
@@ -12,7 +12,7 @@ const mb = menubar({
   height: 220,
   minHeight: 220,
   preloadWindow: true,
-  icon: iconPath("blank.png"),
+  icon: asset("blank.png"),
   backgroundColor: "#e4fefd",
 })
 
@@ -49,7 +49,7 @@ mb.on("ready", () => {
     default:
       iconFile = "tray.png"
   }
-  mb.tray.setImage(iconPath(iconFile))
+  mb.tray.setImage(asset(iconFile))
 
   mb.tray.on("right-click", () => {
     mb.tray.popUpContextMenu(contextMenu)
